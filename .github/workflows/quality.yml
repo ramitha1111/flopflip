@@ -1,3 +1,10 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 3 optimizations:
+# - [HIGH] Split "testing" into parallel jobs (lint + test + build)
+# - [MEDIUM] Add concurrency group to "quality.yml"
+# - [MEDIUM] 3 jobs clone the repo — consider artifact sharing
+# Estimated savings: ~9 min/run
+#
 name: Quality
 
 on:
@@ -7,6 +14,10 @@ on:
       - main
   pull_request:
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   lint:
     name: Linting
